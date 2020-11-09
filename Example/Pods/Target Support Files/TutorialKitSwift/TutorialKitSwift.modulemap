@@ -1,0 +1,6 @@
+framework module TutorialKitSwift {
+  umbrella header "TutorialKitSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

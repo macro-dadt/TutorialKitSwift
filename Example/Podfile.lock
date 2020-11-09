@@ -1,0 +1,23 @@
+PODS:
+  - SnapKit (4.2.0)
+  - TutorialKitSwift (0.1.0):
+    - SnapKit
+
+DEPENDENCIES:
+  - TutorialKitSwift (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  TutorialKitSwift:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  TutorialKitSwift: e72d038ba455fa2ad1c9f5252f12e676604bfb94
+
+PODFILE CHECKSUM: 93963b37259c2e1e020aa1790e556b09431c2d69
+
+COCOAPODS: 1.9.3

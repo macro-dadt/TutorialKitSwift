@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  TutorialKitSwift
+//  TutorialKit
 //
 //  Created by macro-dadt on 11/09/2020.
 //  Copyright (c) 2020 macro-dadt. All rights reserved.
@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let bounds = UIScreen.main.bounds
+        self.window = UIWindow(frame: bounds)
+        window?.rootViewController =  ViewController()
+        window?.makeKeyAndVisible()
+
         return true
     }
 
