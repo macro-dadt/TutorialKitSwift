@@ -7,26 +7,23 @@
 
 import UIKit
 import SnapKit
+
+
 class TutorialView: UIView {
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    let popTip = PopTip()
     var delegate:TutorialViewDelegate?
-    var position:TitlePosition!
+    var direction:Direction!
     var tutKey:String!
     var interactView = UIImageView()
-    lazy var title: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        label.isUserInteractionEnabled = false
-        return label
-    }()
+    var text:String!
+
     @objc func nextTut(){
         DispatchQueue.main.async {
             self.delegate?.didFinishTut(tutKey: self.tutKey)
@@ -34,16 +31,17 @@ class TutorialView: UIView {
             self.removeFromSuperview()
         }
     }
-    init(ofView view:UIView,frame:CGRect,title:String, titlePosition:TitlePosition, tutKey:String, delegate:TutorialViewDelegate? = nil) {
+    init(ofView view:UIView,frame:CGRect,text:String, direction:Direction, tutKey:String,bubbleColor:UIColor = UIColor.systemBlue, delegate:TutorialViewDelegate? = nil) {
         super.init(frame: CGRect.zero)
         self.delegate = delegate
-        self.position = titlePosition
+        self.direction = direction
         self.tutKey = tutKey
-
+        self.popTip.bubbleColor = bubbleColor
+        self.popTip.text = text
+        self.text = text
         
         self.interactView.image =  view.asImage()
 
-        self.title.text = title
         self.addSubview(self.interactView)
         self.interactView.frame = frame
         self.interactView.circlize()
@@ -51,39 +49,34 @@ class TutorialView: UIView {
         self.commonInit()
         self.interactView.isUserInteractionEnabled = false
     }
-    
-    
     private func commonInit(){
-        self.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-        self.title.textColor = UIColor.white
-        self.addSubview(self.title)
-        self.title.snp.makeConstraints({make in
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.8)
-        })
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.8)       
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.nextTut)))
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    func popInstruction(){
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
         
-        switch position {
-        case .top:
-            self.title.snp.makeConstraints({make in
-                make.bottom.equalTo(self.interactView.snp.top).offset(-16)
-                
-            })
+        popTip.dismissHandler = { popTip in
+            self.nextTut()
+        }
+
+        switch direction {
+        case .up:
+            popTip.show(text: self.text, direction: .up, maxWidth: 200, in: self, from: self.interactView.frame)
+
             break
-        case .bottom:
-            self.title.snp.makeConstraints({make in
-                make.top.equalTo(self.interactView.snp.bottom).offset(16)
-            })
-            break
-        case .center:
-            self.title.snp.makeConstraints({make in
-                make.centerY.equalToSuperview()
-            })
+        case .down:
+            popTip.show(text: self.text, direction: .down, maxWidth: 200, in: self, from: self.interactView.frame)
             break
         default:
             break
         }
-        self.layoutIfNeeded()
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.nextTut)))
     }
     /*
      // Only override draw() if you perform custom drawing.

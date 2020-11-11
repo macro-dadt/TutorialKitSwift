@@ -12,9 +12,11 @@ public protocol TutorialViewDelegate{
     func didFinishTut(tutKey:String)
 }
 
-
-public enum TitlePosition {
-    case top,center,bottom
+public enum TutorialShowMode{
+    case always, once
+}
+public enum Direction {
+    case up,down
 }
 
 extension UIView{
@@ -57,26 +59,31 @@ extension UIView{
 
 }
 public extension UIViewController{
-    func showTutorialIfNeed(ofView view: UIView,text:String, titlePosition: TitlePosition, tutKey:String){
+    func showTutorial(ofView view: UIView,text:String, direction: Direction, tutKey:String, mode:TutorialShowMode = .once,bubbleColor:UIColor = UIColor.systemBlue){
         
         let frame = view.getFrameOnScreen()
         
-        let circleRadius = sqrt(pow(frame.width, 2)  + pow(frame.height, 2))/2.0
-        let newFrame = CGRect(x: frame.origin.x + (2.0 * circleRadius - frame.width)/2.0, y: frame.origin.y - (2.0 * circleRadius - frame.height)/2.0, width: 2.0 * circleRadius, height: 2.0 * circleRadius)
+        let circleRadius = sqrt(pow(frame.width, 2)  + pow(frame.height, 2))/2.0 * 1.2
+        let newFrame = CGRect(x: frame.origin.x - (2.0 * circleRadius - frame.width)/2.0, y: frame.origin.y - (2.0 * circleRadius - frame.height)/2.0, width: 2.0 * circleRadius, height: 2.0 * circleRadius)
         let image = self.view.takeSnapshot(newFrame)
         
-        let tutView = TutorialView(ofView: UIImageView(image: image), frame: newFrame, title: text, titlePosition: titlePosition, tutKey:tutKey, delegate: self as? TutorialViewDelegate)
+        let tutView = TutorialView(ofView: UIImageView(image: image), frame: newFrame, text: text, direction: direction, tutKey:tutKey,bubbleColor:bubbleColor, delegate: self as? TutorialViewDelegate)
         //        self.view.addSubview(tutView)
         //        tutView.snp.remakeConstraints({remake in
         //            remake.edges.equalToSuperview()
         //        })
-        if view.isHidden{
+        if view.isHidden || (UserDefaults.standard.bool(forKey: tutKey) && mode == .once) {
             tutView.nextTut()
         }else{
             self.view.addSubview(tutView)
             tutView.snp.remakeConstraints({remake in
                 remake.edges.equalToSuperview()
             })
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            tutView.popInstruction()
+            
         }
     }
 }
+
