@@ -8,7 +8,6 @@
 
 import UIKit
 import TutorialKitSwift
-import AMPopTip
 class ViewController: UIViewController {
     lazy var button:UIButton = {
         let button = UIButton()
