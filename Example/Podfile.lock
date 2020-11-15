@@ -1,6 +1,6 @@
 PODS:
   - SnapKit (5.0.1)
-  - TutorialKitSwift (0.1.2):
+  - TutorialKitSwift (0.0.1):
     - SnapKit
 
 DEPENDENCIES:
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TutorialKitSwift: 3afbcbcebf40800dad11d594d9eaef407630d043
+  TutorialKitSwift: a13ceef0d204c918ea62273e2e7aeb05c3f0bfae
 
 PODFILE CHECKSUM: 93963b37259c2e1e020aa1790e556b09431c2d69
 
