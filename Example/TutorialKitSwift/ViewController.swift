@@ -39,12 +39,12 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func viewDidAppear(_ animated: Bool) {
-        self.showTutorial(ofView: self.button, text: "Hey bae, How you doin?", direction: .down, tutKey: "test",mode: .always, bubbleColor:UIColor.systemBlue)
+        self.showTutorial(ofView: button, text: "Hey bae, How you doin?", direction: .auto, tutKey: "test1",mode: .always, bubbleColor:UIColor.systemBlue)
     }
 
 }
-extension ViewController:TutorialViewDelegate{
-    func didFinishTut(tutKey: String) {
+extension ViewController:TutorialKitSwiftDelegate{
+    func didDismissTut(tutKey: String) {
         print(tutKey)
     }
 }

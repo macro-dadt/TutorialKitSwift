@@ -7,7 +7,37 @@
 
 import UIKit
 import SnapKit
+public class TutorialKitSwift{
+        func showTutorial(ofView view: UIView,text:String, direction: Direction, tutKey:String, mode:TutorialShowMode = .once,bubbleColor:UIColor = UIColor.systemBlue){
+        
+        let frame = view.getFrameOnScreen()
+        guard let window = UIApplication.shared.keyWindow else{
+            return
+        }
 
+        let circleRadius = sqrt(pow(frame.width, 2)  + pow(frame.height, 2))/2.0 * 1.2
+        let newFrame = CGRect(x: frame.origin.x - (2.0 * circleRadius - frame.width)/2.0, y: frame.origin.y - (2.0 * circleRadius - frame.height)/2.0, width: 2.0 * circleRadius, height: 2.0 * circleRadius)
+        let image = window.takeSnapshot(newFrame)
+        
+        let tutView = TutorialView(ofView: UIImageView(image: image), frame: newFrame, text: text, direction: direction, tutKey:tutKey,bubbleColor:bubbleColor, delegate: self as? TutorialKitSwiftDelegate)
+        //        self.view.addSubview(tutView)
+        //        tutView.snp.remakeConstraints({remake in
+        //            remake.edges.equalToSuperview()
+        //        })
+        if view.isHidden || (UserDefaults.standard.bool(forKey: tutKey) && mode == .once) {
+            tutView.nextTut()
+        }else{
+            window.addSubview(tutView)
+            tutView.snp.remakeConstraints({remake in
+                remake.edges.equalToSuperview()
+            })
+            window.setNeedsLayout()
+            window.layoutIfNeeded()
+            tutView.popInstruction()
+            
+        }
+    }
+}
 
 class TutorialView: UIView {
 
@@ -18,7 +48,7 @@ class TutorialView: UIView {
         super.init(coder: coder)
     }
     let popTip = PopTip()
-    var delegate:TutorialViewDelegate?
+    var delegate:TutorialKitSwiftDelegate?
     var direction:Direction!
     var tutKey:String!
     var interactView = UIImageView()
@@ -26,12 +56,12 @@ class TutorialView: UIView {
 
     @objc func nextTut(){
         DispatchQueue.main.async {
-            self.delegate?.didFinishTut(tutKey: self.tutKey)
+            self.delegate?.didDismissTut(tutKey: self.tutKey)
             UserDefaults.standard.set(true, forKey: self.tutKey)
             self.removeFromSuperview()
         }
     }
-    init(ofView view:UIView,frame:CGRect,text:String, direction:Direction, tutKey:String,bubbleColor:UIColor = UIColor.systemBlue, delegate:TutorialViewDelegate? = nil) {
+    init(ofView view:UIView,frame:CGRect,text:String, direction:Direction, tutKey:String,bubbleColor:UIColor = UIColor.systemBlue, delegate:TutorialKitSwiftDelegate? = nil) {
         super.init(frame: CGRect.zero)
         self.delegate = delegate
         self.direction = direction
@@ -73,6 +103,9 @@ class TutorialView: UIView {
             break
         case .down:
             popTip.show(text: self.text, direction: .down, maxWidth: 200, in: self, from: self.interactView.frame)
+            break
+        case .auto:
+            popTip.show(text: self.text, direction: .auto, maxWidth: 200, in: self, from: self.interactView.frame)
             break
         default:
             break
