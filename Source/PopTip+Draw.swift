@@ -17,7 +17,7 @@ fileprivate struct CornerPoint {
 // MARK: - Draw helper
 public extension PopTip {
   class func pathWith(rect: CGRect, frame: CGRect, direction: PopTipDirection, arrowSize: CGSize, arrowPosition: CGPoint, arrowRadius: CGFloat, borderWidth: CGFloat = 0, radius: CGFloat = 0) -> UIBezierPath {
-    var path = UIBezierPath()
+    let path = UIBezierPath()
     var baloonFrame = CGRect.zero
     
     switch direction {
