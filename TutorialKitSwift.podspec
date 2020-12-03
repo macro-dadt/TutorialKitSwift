@@ -4,11 +4,12 @@
 #
 # Any lines starting with a # are optional, but their use is encouraged
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
-#
+# pod lib lint
+# pod trunk push
 
 Pod::Spec.new do |s|
   s.name             = 'TutorialKitSwift'
-  s.version          = '0.1.5'
+  s.version          = '0.1.6'
   s.summary          = 'TutorialKitSwift.'
 
 # This description is used to generate tags and improve search results.
