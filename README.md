@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.showTutorial(ofView: your_view, text: "Hey bae, How you doin?", direction: .down, tutKey: "tut1_key",mode: .always, bubbleColor:UIColor.systemBlue)
+        TutorialKitSwift.showTutorial(ofView: your_view, text: "Hey bae, How you doin?", direction: .down, tutKey: "tut1_key",mode: .always, bubbleColor:UIColor.systemBlue)
     }
 }
 extension ViewController:TutorialViewDelegate{
